@@ -117,6 +117,19 @@ def all_combinations(file_string, n=3, value=0):
     print('Processing...')
 
     kernels = generate_combinations(n, value)
+
+    # Sobel Pruitt
+
+    # kernel_str = [1, 0, -1, 1, 0, -1, 1, 0, -1]
+    # kernel_str = [1, 0, -1, 2, 0, -2, 1, 0, -1]
+    # kernel_str = [-1, -1, -1, 0, 0, 0, 1, 1, 1]
+    # kernel_str = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
+
+    # kernel = np.array([kernel_str[:3],
+    #                kernel_str[3:6],
+    #                kernel_str[6:]])
+    # kernels = [(kernel_str, kernel)]
+
     for kernel_str, kernel in kernels:
 
         #rgb photos
@@ -134,6 +147,10 @@ def all_combinations(file_string, n=3, value=0):
             img_out = signal.convolve2d(img, kernel, mode='same')
 
         #end result
+        minimum = np.amin(img_out)
+        maximum = np.amax(img_out)
+        img_out += -minimum
+
         kernel_str = '_'.join([str(x) for x in kernel_str])
         misc.imsave('out/' + image_name + '/' + folder + '/' + kernel_str + '.jpg', img_out)
 
@@ -141,5 +158,5 @@ if __name__ == '__main__':
     start = -1
     end = 1
     for i in range(start, end + 1):
-        all_combinations('architecture.jpg', n=5, value=i)
+        all_combinations('lena.jpg', n=5, value=i)
     print "Complete!"
