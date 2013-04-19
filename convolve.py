@@ -1,4 +1,7 @@
+#! /usr/bin/env python
+
 from __future__ import division
+from sys import argv
 import numpy as np
 from scipy import ndimage, misc, signal
 from random import randint
