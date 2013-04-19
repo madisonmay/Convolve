@@ -143,6 +143,11 @@ def all_combinations(file_string, n=3, value=0):
 if __name__ == '__main__':
     start = -1
     end = 1
-    for i in range(start, end + 1):
-        all_combinations(f_name, n=5, value=i)
-    print "Complete!"
+    if len(argv)>1:
+        f_names = argv[1::]
+    else:
+        f_names = ['rings.jpg']
+    for f_name in f_names:
+        for i in range(start, end + 1):
+            all_combinations(f_name, n=5, value=i)
+        print "Complete!"
