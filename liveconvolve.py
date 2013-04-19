@@ -1,4 +1,3 @@
-from SimpleCV import *
 from cv import *
 from time import time
 import numpy as np
@@ -55,4 +54,6 @@ for i in range(frames*30):
 	ShowImage('Camera',frame)
 	WaitKey(1)
 # Frame Rate
+
 print(frames/(time()-start))
+
