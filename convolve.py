@@ -165,11 +165,11 @@ def all_combinations(file_string, n=3, value=0):
             img_out = signal.convolve2d(img, kernel, mode='same')
 
         # #normalization
-        # minimum = np.amin(img_out)
-        # maximum = np.amax(img_out)
-        # pixel_range = maximum - minimum
-        # img_out -= minimum
-        # img_out = (img_out*255)//pixel_range
+        minimum = np.amin(img_out)
+        maximum = np.amax(img_out)
+        pixel_range = (maximum - minimum)/2
+        img_out -= minimum
+        img_out = (img_out)//pixel_range * 255
 
         #end result
         kernel_str = '_'.join([str(x) for x in kernel_str])
