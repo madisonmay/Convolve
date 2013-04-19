@@ -1,4 +1,3 @@
-from SimpleCV import *
 from cv import *
 from time import time
 import numpy as np
@@ -26,6 +25,7 @@ start = time()
 for i in range(frames):
 
 	frame = QueryFrame(wc)
+	print frame
 	Filter2D(frame, frame, -1, conv)
 
 	# Display transformed image
@@ -46,3 +46,6 @@ print(frames/(time()-start))
 	# # Apply Laplace Edge Detection
 	# Laplace(frame, channel_img,laplace_threshold)
 	# Convert(channel_img,frame)
+
+
+
