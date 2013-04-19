@@ -1,6 +1,7 @@
 from SimpleCV import *
 from cv import *
 from time import time
+import numpy as np
 
 # SETUP VARIABLES
 
@@ -16,10 +17,16 @@ frame = CreateImage(im_size,8,1)
 binary_threshold = 100
 laplace_threshold = 5 # must be <31 and odd
 
+mat = np.array([[-1,-1,-1],
+		   		[-1, 8,-1],
+		  		[-1,-1,-1]])
+conv = fromarray(mat)
+
 start = time()
 for i in range(frames):
 
 	frame = QueryFrame(wc)
+	Filter2D(frame, frame, -1, conv)
 
 	# Display transformed image
 	ShowImage('Camera',frame)
