@@ -1,4 +1,3 @@
-from SimpleCV import *
 from cv import *
 from time import time
 import numpy as np
@@ -7,42 +6,54 @@ import numpy as np
 
 wc = CaptureFromCAM(0)
 NamedWindow('Camera',CV_WINDOW_AUTOSIZE)
-frames = 10*30
-im_size = (640,480)
+frames = 10 # approximate duration in seconds
 
-channel_img = CreateImage(im_size, IPL_DEPTH_16S, 1)
-frame = CreateImage(im_size,8,1)
+# Returns a CvMat object equivalent to entered list matrix
+def giveMeCV(l):
+	r = cv.CreateMat(len(l),len(l[0]),1)
+	for i in range(len(l)):
+		for j in range(len(l[0])):
+			cv.SetND(r,(i,j),l[i][j])
+	return r
 
-# FILTER VARIABLES
-binary_threshold = 100
-laplace_threshold = 5 # must be <31 and odd
+# Example Kernels for Testing
 
-mat = np.array([[-1,-1,-1],
-		   		[-1, 8,-1],
-		  		[-1,-1,-1]])
-conv = fromarray(mat)
+sobel = giveMeCV([[-1, 0, 1],
+			  	  [-2, 0, 2],
+			   	  [-1, 0, 1]])
+test = np.matrix([[-1, 0, 1],
+			  	  [-2, 0, 2],
+			   	  [-1, 0, 1]])
+test = np.transpose(test)
+sobelT = giveMeCV(test.tolist())
 
-start = time()
-for i in range(frames):
+laplace = giveMeCV([[-1,-1,-1],
+					[-1, 8,-1],
+					[-1,-1,-1]])
 
+uberlaplace = giveMeCV([[-1,-1,-1,-1,-1],
+						[-1,-1,-1,-1,-1],
+						[-1,-1,24,-1,-1],
+						[-1,-1,-1,-1,-1],
+						[-1,-1,-1,-1,-1]])
+
+# Applied Kernel
+kernel = sobel
+
+start = time() # for framerate checking (usu. ~30)
+for i in range(frames*30):
+
+	# Capture Frame from Webcam
 	frame = QueryFrame(wc)
-	Filter2D(frame, frame, -1, conv)
+	# Apply Kernel Filter
+	Filter2D(frame, frame, kernel)
+	# Mirror Image
+	Flip(frame,flipMode=1)
 
 	# Display transformed image
 	ShowImage('Camera',frame)
 	WaitKey(1)
+# Frame Rate
+
 print(frames/(time()-start))
 
-	# # Grayscale conversion
-	# CvtColor(QueryFrame(wc),frame,CV_RGB2GRAY)
-	# #EqualizeHist(frame,frame)
-
-	# # Mirror
-	# Flip(frame,flipMode=1)
-
-	# # Apply Binary Threshold (B+W convert)
-	# Threshold(frame,frame,binary_threshold,255,CV_THRESH_BINARY)
-
-	# # Apply Laplace Edge Detection
-	# Laplace(frame, channel_img,laplace_threshold)
-	# Convert(channel_img,frame)
