@@ -6,7 +6,7 @@ import numpy as np
 
 wc = CaptureFromCAM(0)
 NamedWindow('Camera',CV_WINDOW_AUTOSIZE)
-frames = 15 # approximate duration in seconds
+frames = 10 # approximate duration in seconds
 
 # Returns a CvMat object equivalent to entered list matrix
 def giveMeCV(l):
@@ -21,6 +21,11 @@ def giveMeCV(l):
 sobel = giveMeCV([[-1, 0, 1],
 			  	  [-2, 0, 2],
 			   	  [-1, 0, 1]])
+test = np.matrix([[-1, 0, 1],
+			  	  [-2, 0, 2],
+			   	  [-1, 0, 1]])
+test = np.transpose(test)
+sobelT = giveMeCV(test.tolist())
 
 laplace = giveMeCV([[-1,-1,-1],
 					[-1, 8,-1],
@@ -33,7 +38,7 @@ uberlaplace = giveMeCV([[-1,-1,-1,-1,-1],
 						[-1,-1,-1,-1,-1]])
 
 # Applied Kernel
-kernel = uberlaplace
+kernel = sobel
 
 start = time() # for framerate checking (usu. ~30)
 for i in range(frames*30):
