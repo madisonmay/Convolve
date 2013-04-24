@@ -142,43 +142,47 @@ def all_combinations(file_string, n=3, value=0):
     # kernel_str = [1, 0, -1, 2, 0, -2, 1, 0, -1]
     # kernel_str = [-1, -1, -1, 0, 0, 0, 1, 1, 1]
     # kernel_str = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
+    kernel_str = [-1, -1, -1, -1, 8, -1, -1, -1, -1]
 
-    # kernel = np.array([kernel_str[:3],
-    #                kernel_str[3:6],
-    #                kernel_str[6:]])
-    # kernels = [(kernel_str, kernel)]
+    kernel = np.array([kernel_str[:3],
+                       kernel_str[3:6],
+                       kernel_str[6:]])
+    kernels = [(kernel_str, kernel)]
 
     for kernel_str, kernel in kernels:
+
 
         #rgb photos
         if c == 3:
 
-            # r2 = signal.convolve2d(r, kernel, mode='same')
-            # g2 = signal.convolve2d(g, kernel, mode='same')
-            # b2 = signal.convolve2d(b, kernel, mode='same')
-            # img_out = np.ndarray(shape=(h, w, c), dtype=int)
+            r2 = signal.convolve2d(r, kernel, mode='same')
+            g2 = signal.convolve2d(g, kernel, mode='same')
+            b2 = signal.convolve2d(b, kernel, mode='same')
 
             # #combine rgb channels
             # img_out[:,:,0], img_out[:,:,1], img_out[:,:,2] = r2, g2, b2
             img = r*.2126 + g*.7152 + b*.0722
             img_out = signal.convolve2d(img, kernel, mode='same')
 
+
         #greyscale
         else:
+
             img_out = signal.convolve2d(img, kernel, mode='same')
 
-        # #normalization
+        #normalization
         minimum = np.amin(img_out)
         maximum = np.amax(img_out)
-        pixel_range = (maximum - minimum)/2
+        pixel_range = maximum - minimum
         img_out -= minimum
-        img_out = (img_out)//pixel_range * 255
+        img_out = (img_out*255)//pixel_range
 
         #end result
         kernel_str = '_'.join([str(x) for x in kernel_str])
-        misc.imsave('out/' + image_name + '/' + kernel_str + '.jpg', img_out)
+        # misc.imsave('out/' + image_name + '/' + kernel_str + '.jpg', img_out)
+        misc.imsave('convolved.jpg', img_out)
 
-    system('rm out/' + image_name + '/' + '0_0_0_0_0_0_0_0_0.jpg')
+    # system('rm out/' + image_name + '/' + '0_0_0_0_0_0_0_0_0.jpg')
 
 if __name__ == '__main__':
     all_combinations('lena.png', n=5)
