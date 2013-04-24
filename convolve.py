@@ -155,40 +155,22 @@ def all_combinations(file_string, n=3, value=0):
         #rgb photos
         if c == 3:
 
-            # r2 = signal.convolve2d(r, kernel, mode='same')
-            # g2 = signal.convolve2d(g, kernel, mode='same')
-            # b2 = signal.convolve2d(b, kernel, mode='same')
-            # img_out = np.ndarray(shape=(h, w, c), dtype=int)
+            r2 = signal.convolve2d(r, kernel, mode='same')
+            g2 = signal.convolve2d(g, kernel, mode='same')
+            b2 = signal.convolve2d(b, kernel, mode='same')
 
             # #combine rgb channels
             # img_out[:,:,0], img_out[:,:,1], img_out[:,:,2] = r2, g2, b2
             img = r*.2126 + g*.7152 + b*.0722
-            # img_out = signal.convolve2d(img, kernel, mode='same')
+            img_out = signal.convolve2d(img, kernel, mode='same')
 
-            r1, c1 = img.shape
-            r2, c2 = kernel.shape
-            r = r1+r2-1
-            c = c1+c2-1
-
-            fft_img = np.fft.fft2(img)
-            fft_kernel = np.fft.fft2(kernel)
-            fft_final = fft_img * fft_kernel
-            img_out = np.fft.ifft2(fft_final).real
 
         #greyscale
         else:
 
-            # img_out = signal.convolve2d(img, kernel, mode='same')
+            img_out = signal.convolve2d(img, kernel, mode='same')
 
-            r1, c1 = imag.shape
-            r2, c2 = kernel.shape
-            r = r1+r2-1
-            c = c1+c2-1
 
-            fft_img = np.fft.fft2(img, s=(r, c))
-            fft_kernel = np.fft.fft2(kernel, s=(r, c))
-            fft_final = fft_img * fft_kernel
-            img_out = np.fft.ifft2(fft_final).real
 
         #normalization
         minimum = np.amin(img_out)
