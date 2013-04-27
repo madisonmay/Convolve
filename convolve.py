@@ -171,8 +171,6 @@ def all_combinations(file_string, n=3, value=0):
 
             img_out = signal.convolve2d(img, kernel, mode='same')
 
-
-
         #normalization
         minimum = np.amin(img_out)
         maximum = np.amax(img_out)
