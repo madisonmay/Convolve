@@ -8,10 +8,10 @@ def convolve_fft(img, kernel):
     #Dimensions of img -- rows/cols
     image_rows, image_cols = img.shape
 
+
     fft_img = np.fft.fft2(img, s=(image_rows, image_cols))
     fft_kernel = np.fft.fft2(kernel, s=(image_rows, image_cols))
     fft_image = fft_img * fft_kernel
-
     img_out = np.fft.ifft2(fft_image)
 
     return img_out
@@ -57,4 +57,4 @@ def convolve_wrapper(imagename, savename):
     return img_unscaled, img_out
 
 if __name__ == '__main__':
-    convolve_wrapper('lena.png', 'convolved.png')
+    convolve_wrapper('miller.jpg', 'fft.png')

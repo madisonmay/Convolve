@@ -142,7 +142,8 @@ def all_combinations(file_string, n=3, value=0):
     # kernel_str = [1, 0, -1, 2, 0, -2, 1, 0, -1]
     # kernel_str = [-1, -1, -1, 0, 0, 0, 1, 1, 1]
     # kernel_str = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
-    kernel_str = [-1, -1, -1, -1, 8, -1, -1, -1, -1]
+    kernel_str = [-2, -1, 0, -1, 0, 1, 0, 1, 2]
+
 
     kernel = np.array([kernel_str[:3],
                        kernel_str[3:6],
@@ -187,5 +188,5 @@ def all_combinations(file_string, n=3, value=0):
     # system('rm out/' + image_name + '/' + '0_0_0_0_0_0_0_0_0.jpg')
 
 if __name__ == '__main__':
-    all_combinations('lena.png', n=5)
+    all_combinations('miller.jpg', n=5)
     print "Complete!"
