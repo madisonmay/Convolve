@@ -1,5 +1,8 @@
 out/
 out
 ./out/
+Images/
+Images
+./Images/
 *.jpg
 *.png

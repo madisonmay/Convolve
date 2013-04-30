@@ -9,17 +9,22 @@ def convolve_fft(img, kernel, output):
     #Dimensions of img -- rows/cols
     image_rows, image_cols = img.shape
 
-
     fft_img = np.fft.fft2(img, s=(image_rows, image_cols))
+
+    fft_img = np.roll(fft_img, image_rows/2, axis=0)
+    fft_img = np.roll(fft_img, image_cols/2, axis=1)
+
     fft_kernel = np.fft.fft2(kernel, s=(image_rows, image_cols))
+
+    fft_kernel = np.roll(fft_kernel, image_rows/2, axis=0)
+    fft_kernel = np.roll(fft_kernel, image_cols/2, axis=1)
+
     fft_image = fft_img * fft_kernel
     img_out = np.fft.ifft2(fft_image)
 
     # fft_img = fft of image, fft_kernel = fft of kernel, fft_image = multiplication of fft_img and fft_kernel, img_out = inverse fft of fft_image
     l = [fft_img, fft_kernel, fft_image, img_out]
     return l[output]
-
-
 
 # input: image name, 2d kernel, output
 # returns unscaled 3d matrix as well as scaled 3d image matrix
@@ -47,16 +52,24 @@ def convolve_wrapper(imagename, savename, output):
 
 
     weights = [.2126, .7152, .0722]
-    # for i in range(channels): #scale each color channel to between 0 and 255
-    #     img_channel = img_out[:,:,i]
-    #     channel_min = img_channel.min()
-    #     img_channel = img_channel- channel_min
-    #     channel_max = img_channel.max()
-    #     img_channel = (img_channel/channel_max)*255.0
-    #     img_out[:,:,i] = img_channel*weights[i]
+    for i in range(channels): #scale each color channel to between 0 and 255
+        img_channel = abs(img_out[:,:,i])
+        channel_min = img_channel.min()
+        img_channel = img_channel- channel_min
+        channel_max = img_channel.max()
+        img_channel = (img_channel/channel_max)*255.0
+        img_out[:,:,i] = img_channel*weights[i]
 
-    img = abs(255 - img_out[:,:,0]) + abs(255 - img_out[:,:,1]) + abs(255 - img_out[:,:,2])
+    img = img_out[:,:,0] + img_out[:,:,1] + img_out[:,:,2]
     misc.imsave(savename, img.real)
+
+    def mappoint (i):
+        if i > 0: return 255
+        else: return 0
+
+    img = Image.open('fft.png')
+    img = img.point(mappoint)
+    img.save('fft.png')
 
     return img_unscaled, img_out
 
