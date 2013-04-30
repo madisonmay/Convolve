@@ -73,7 +73,8 @@ from os import system
 #                            kernel_str[3:6],
 #                            kernel_str[6:]])
 
-#         if sum(kernel_str) != value:
+#         if sum(kernel_str) !=system('mkdir out')
+            # system('mkdir out/' + image_name) value:
 #             kernel[1][1] += (value - sum(kernel_str))
 #             kernel_str[4] = kernel[1][1]
 
@@ -129,20 +130,23 @@ def all_combinations(file_string, n=3, value=0):
     folder = file_string.split('.')[0] + '_out_' + str(value)
     image_name = file_string.split('.')[0]
 
-    system('mkdir out')
-    system('mkdir out/' + image_name)
-    system('clear')
+    #system('mkdir out')
+    #system('mkdir out/' + image_name)
+    #system('clear')
     print('Processing...')
 
     kernels = generate_combinations(n, value)
 
     # Sobel Pruitt
 
-    # kernel_str = [1, 0, -1, 1, 0, -1, 1, 0, -1]
+    # kernel_str = [1, 0, -1, 1, 0, -1, 1, 0, -1] # Vertical Sobel
     # kernel_str = [1, 0, -1, 2, 0, -2, 1, 0, -1]
-    # kernel_str = [-1, -1, -1, 0, 0, 0, 1, 1, 1]
+    # kernel_str = [-1, -1, -1, 0, 0, 0, 1, 1, 1] # Horizontal Sobel
     # kernel_str = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
-    kernel_str = [-2, -1, 0, -1, 0, 1, 0, 1, 2]
+    # kernel_str = [-2, -1, 0, -1, 0, 1, 0, 1, 2]
+    kernel_str = [-1, -1, -1, -1, 8, -1, -1, -1, -1]
+    #kernel_str = [-1*x for x in kernel_str] # laplacian2
+
 
 
     kernel = np.array([kernel_str[:3],
@@ -181,10 +185,10 @@ def all_combinations(file_string, n=3, value=0):
         #end result
         kernel_str = '_'.join([str(x) for x in kernel_str])
         # misc.imsave('out/' + image_name + '/' + kernel_str + '.jpg', img_out)
-        misc.imsave('convolved.jpg', img_out)
+        misc.imsave('Images/'+'convolved.jpg', img_out)
 
     # system('rm out/' + image_name + '/' + '0_0_0_0_0_0_0_0_0.jpg')
 
 if __name__ == '__main__':
-    all_combinations('miller.jpg', n=5)
+    all_combinations('Images/'+'ball.jpg', n=5)
     print "Complete!"

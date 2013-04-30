@@ -29,10 +29,11 @@ def convolve_wrapper(imagename, savename, output):
     #convolution kernel
     kernel = np.matrix([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
 
-    img = np.array(Image.open(imagename))
+    #img = np.array(Image.open(imagename))
+    img = imagename
 
     rows, cols, channels = img.shape
-    print rows, cols, channels
+    #print rows, cols, channels
 
     img_r = img[:,:,0]
     img_g = img[:,:,1]  
@@ -45,18 +46,8 @@ def convolve_wrapper(imagename, savename, output):
     img_out = np.dstack((fft_r,fft_g,fft_b)) #recreating rgb image
     img_unscaled = np.copy(img_out)
 
-
-    weights = [.2126, .7152, .0722]
-    # for i in range(channels): #scale each color channel to between 0 and 255
-    #     img_channel = img_out[:,:,i]
-    #     channel_min = img_channel.min()
-    #     img_channel = img_channel- channel_min
-    #     channel_max = img_channel.max()
-    #     img_channel = (img_channel/channel_max)*255.0
-    #     img_out[:,:,i] = img_channel*weights[i]
-
     img = abs(255 - img_out[:,:,0]) + abs(255 - img_out[:,:,1]) + abs(255 - img_out[:,:,2])
-    misc.imsave(savename, img.real)
+    #misc.imsave(savename, img.real)
 
     return img_unscaled, img_out
 
@@ -65,4 +56,4 @@ if __name__ == '__main__':
         1: fft_kernel
         2: fft_image
         3: image_out'''
-    convolve_wrapper('Images/'+'plaid1.jpg', 'Images/'+'fft.png',2)
+    convolve_wrapper('Images/'+'miller.jpg', 'Images/'+'fft.png',2)
